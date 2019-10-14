@@ -1,5 +1,7 @@
 from .pages.main_page import MainPage
 
+link = "http://selenium1py.pythonanywhere.com/"
+
 
 # class TestMainPage(MainPage):
 #     #     def test_running_auto_tests_for_different_interface_languages(self, browser):
@@ -11,14 +13,12 @@ from .pages.main_page import MainPage
 #     #         time.sleep(3)
 
 def test_guest_can_go_to_login_page(browser):
-    link = "http://selenium1py.pythonanywhere.com/"
     page = MainPage(browser, link)
     page.open()  # открываем страницу
     page.go_to_login_page()
 
 
 def test_guest_should_see_login_link(browser):
-    link = "http://selenium1py.pythonanywhere.com/"
     page = MainPage(browser, link)
     page.open()
     page.should_be_login_link()
