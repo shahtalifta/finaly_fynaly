@@ -1,17 +1,18 @@
 import math
 
 from selenium.common.exceptions import NoAlertPresentException
-from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from .locators import BasePageLocators
+
+from .locators import BasePageLocators, MainPageLocators, BasketPageLocators
 
 
 class BasePage:
     """Базовый класс создания объекта страницы"""
 
-    def __init__(self, browser, url, timeout=1):
+    def __init__(self, browser, url, timeout=6):
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout)
@@ -63,3 +64,15 @@ class BasePage:
 
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
+
+    def go_to_basket_page(self):
+        go_basket = WebDriverWait(self.browser, 10).until(EC.presence_of_element_located(MainPageLocators.VIEW_BASKET))
+        go_basket.click()
+
+    def your_basket_is_empty(self):
+        assert WebDriverWait(self.browser, 10).until(
+            EC.text_to_be_present_in_element(BasketPageLocators.BASKET_STATUS, "Your basket is empty"))
+
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"
